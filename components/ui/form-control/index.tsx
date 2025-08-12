@@ -1,15 +1,12 @@
 'use client';
-import { Text, View } from 'react-native';
-import React from 'react';
 import { createFormControl } from '@gluestack-ui/form-control';
-import { tva } from '@gluestack-ui/nativewind-utils/tva';
-import {
-  withStyleContext,
-  useStyleContext,
-} from '@gluestack-ui/nativewind-utils/withStyleContext';
-import { cssInterop } from 'nativewind';
-import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 import { PrimitiveIcon, UIIcon } from '@gluestack-ui/icon';
+import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+import { tva } from '@gluestack-ui/nativewind-utils/tva';
+import { useStyleContext, withStyleContext } from '@gluestack-ui/nativewind-utils/withStyleContext';
+import { cssInterop } from 'nativewind';
+import React from 'react';
+import { Text, View } from 'react-native';
 
 const SCOPE = 'FORM_CONTROL';
 
@@ -29,11 +26,11 @@ const formControlErrorIconStyle = tva({
   variants: {
     size: {
       '2xs': 'h-3 w-3',
-      'xs': 'h-3.5 w-3.5',
-      'sm': 'h-4 w-4',
-      'md': 'h-[18px] w-[18px]',
-      'lg': 'h-5 w-5',
-      'xl': 'h-6 w-6',
+      xs: 'h-3.5 w-3.5',
+      sm: 'h-4 w-4',
+      md: 'h-[18px] w-[18px]',
+      lg: 'h-5 w-5',
+      xl: 'h-6 w-6',
     },
   },
 });
@@ -59,11 +56,11 @@ const formControlErrorTextStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -103,11 +100,11 @@ const formControlHelperTextStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-xs',
-      'md': 'text-sm',
-      'lg': 'text-base',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-base',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -147,11 +144,11 @@ const formControlLabelTextStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -187,11 +184,11 @@ const formControlLabelAstrickStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -210,28 +207,25 @@ const formControlLabelAstrickStyle = tva({
   },
 });
 
-type IFormControlLabelAstrickProps = React.ComponentPropsWithoutRef<
-  typeof Text
-> &
+type IFormControlLabelAstrickProps = React.ComponentPropsWithoutRef<typeof Text> &
   VariantProps<typeof formControlLabelAstrickStyle>;
 
-const FormControlLabelAstrick = React.forwardRef<
-  React.ElementRef<typeof Text>,
-  IFormControlLabelAstrickProps
->(({ className, ...props }, ref) => {
-  const { size: parentSize } = useStyleContext(SCOPE);
+const FormControlLabelAstrick = React.forwardRef<React.ElementRef<typeof Text>, IFormControlLabelAstrickProps>(
+  ({ className, ...props }, ref) => {
+    const { size: parentSize } = useStyleContext(SCOPE);
 
-  return (
-    <Text
-      ref={ref}
-      className={formControlLabelAstrickStyle({
-        parentVariants: { size: parentSize },
-        class: className,
-      })}
-      {...props}
-    />
-  );
-});
+    return (
+      <Text
+        ref={ref}
+        className={formControlLabelAstrickStyle({
+          parentVariants: { size: parentSize },
+          class: className,
+        })}
+        {...props}
+      />
+    );
+  },
+);
 
 export const UIFormControl = createFormControl({
   Root: withStyleContext(View, SCOPE),
@@ -258,42 +252,26 @@ cssInterop(PrimitiveIcon, {
   },
 });
 
-type IFormControlProps = React.ComponentProps<typeof UIFormControl> &
-  VariantProps<typeof formControlStyle>;
+type IFormControlProps = React.ComponentProps<typeof UIFormControl> & VariantProps<typeof formControlStyle>;
 
-const FormControl = React.forwardRef<
-  React.ElementRef<typeof UIFormControl>,
-  IFormControlProps
->(({ className, size = 'md', ...props }, ref) => {
-  return (
-    <UIFormControl
-      ref={ref}
-      className={formControlStyle({ size, class: className })}
-      {...props}
-      context={{ size }}
-    />
-  );
-});
+const FormControl = React.forwardRef<React.ElementRef<typeof UIFormControl>, IFormControlProps>(
+  ({ className, size = 'md', ...props }, ref) => {
+    return (
+      <UIFormControl ref={ref} className={formControlStyle({ size, class: className })} {...props} context={{ size }} />
+    );
+  },
+);
 
 type IFormControlErrorProps = React.ComponentProps<typeof UIFormControl.Error> &
   VariantProps<typeof formControlErrorStyle>;
 
-const FormControlError = React.forwardRef<
-  React.ElementRef<typeof UIFormControl.Error>,
-  IFormControlErrorProps
->(({ className, ...props }, ref) => {
-  return (
-    <UIFormControl.Error
-      ref={ref}
-      className={formControlErrorStyle({ class: className })}
-      {...props}
-    />
-  );
-});
+const FormControlError = React.forwardRef<React.ElementRef<typeof UIFormControl.Error>, IFormControlErrorProps>(
+  ({ className, ...props }, ref) => {
+    return <UIFormControl.Error ref={ref} className={formControlErrorStyle({ class: className })} {...props} />;
+  },
+);
 
-type IFormControlErrorTextProps = React.ComponentProps<
-  typeof UIFormControl.Error.Text
-> &
+type IFormControlErrorTextProps = React.ComponentProps<typeof UIFormControl.Error.Text> &
   VariantProps<typeof formControlErrorTextStyle>;
 
 const FormControlErrorText = React.forwardRef<
@@ -314,9 +292,7 @@ const FormControlErrorText = React.forwardRef<
   );
 });
 
-type IFormControlErrorIconProps = React.ComponentProps<
-  typeof UIFormControl.Error.Icon
-> &
+type IFormControlErrorIconProps = React.ComponentProps<typeof UIFormControl.Error.Icon> &
   VariantProps<typeof formControlErrorIconStyle> & {
     height?: number;
     width?: number;
@@ -337,16 +313,9 @@ const FormControlErrorIcon = React.forwardRef<
         size={size}
       />
     );
-  } else if (
-    (props.height !== undefined || props.width !== undefined) &&
-    size === undefined
-  ) {
+  } else if ((props.height !== undefined || props.width !== undefined) && size === undefined) {
     return (
-      <UIFormControl.Error.Icon
-        ref={ref}
-        {...props}
-        className={formControlErrorIconStyle({ class: className })}
-      />
+      <UIFormControl.Error.Icon ref={ref} {...props} className={formControlErrorIconStyle({ class: className })} />
     );
   }
   return (
@@ -364,22 +333,13 @@ const FormControlErrorIcon = React.forwardRef<
 type IFormControlLabelProps = React.ComponentProps<typeof UIFormControl.Label> &
   VariantProps<typeof formControlLabelStyle>;
 
-const FormControlLabel = React.forwardRef<
-  React.ElementRef<typeof UIFormControl.Label>,
-  IFormControlLabelProps
->(({ className, ...props }, ref) => {
-  return (
-    <UIFormControl.Label
-      ref={ref}
-      className={formControlLabelStyle({ class: className })}
-      {...props}
-    />
-  );
-});
+const FormControlLabel = React.forwardRef<React.ElementRef<typeof UIFormControl.Label>, IFormControlLabelProps>(
+  ({ className, ...props }, ref) => {
+    return <UIFormControl.Label ref={ref} className={formControlLabelStyle({ class: className })} {...props} />;
+  },
+);
 
-type IFormControlLabelTextProps = React.ComponentProps<
-  typeof UIFormControl.Label.Text
-> &
+type IFormControlLabelTextProps = React.ComponentProps<typeof UIFormControl.Label.Text> &
   VariantProps<typeof formControlLabelTextStyle>;
 
 const FormControlLabelText = React.forwardRef<
@@ -401,29 +361,24 @@ const FormControlLabelText = React.forwardRef<
   );
 });
 
-type IFormControlHelperProps = React.ComponentProps<
-  typeof UIFormControl.Helper
-> &
+type IFormControlHelperProps = React.ComponentProps<typeof UIFormControl.Helper> &
   VariantProps<typeof formControlHelperStyle>;
 
-const FormControlHelper = React.forwardRef<
-  React.ElementRef<typeof UIFormControl.Helper>,
-  IFormControlHelperProps
->(({ className, ...props }, ref) => {
-  return (
-    <UIFormControl.Helper
-      ref={ref}
-      className={formControlHelperStyle({
-        class: className,
-      })}
-      {...props}
-    />
-  );
-});
+const FormControlHelper = React.forwardRef<React.ElementRef<typeof UIFormControl.Helper>, IFormControlHelperProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <UIFormControl.Helper
+        ref={ref}
+        className={formControlHelperStyle({
+          class: className,
+        })}
+        {...props}
+      />
+    );
+  },
+);
 
-type IFormControlHelperTextProps = React.ComponentProps<
-  typeof UIFormControl.Helper.Text
-> &
+type IFormControlHelperTextProps = React.ComponentProps<typeof UIFormControl.Helper.Text> &
   VariantProps<typeof formControlHelperTextStyle>;
 
 const FormControlHelperText = React.forwardRef<

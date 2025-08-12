@@ -1,27 +1,15 @@
-import React from "react";
-import { Svg, G, Ellipse, Defs, RadialGradient, Stop } from "react-native-svg";
+import React from 'react';
+import { Defs, Ellipse, G, RadialGradient, Stop, Svg } from 'react-native-svg';
 
 const SvgComponent = () => {
   return (
     <Svg width="965" height="1078" viewBox="0 0 965 1078" fill="none">
       <G opacity="0.8">
         <G>
-          <Ellipse
-            cx="222.599"
-            cy="277.706"
-            rx="641.842"
-            ry="699.982"
-            fill="url(#paint0_radial_2913_5676)"
-          />
+          <Ellipse cx="222.599" cy="277.706" rx="641.842" ry="699.982" fill="url(#paint0_radial_2913_5676)" />
         </G>
         <G>
-          <Ellipse
-            cx="-82.2838"
-            cy="30.7211"
-            rx="463.716"
-            ry="505.721"
-            fill="url(#paint1_radial_2913_5676)"
-          />
+          <Ellipse cx="-82.2838" cy="30.7211" rx="463.716" ry="505.721" fill="url(#paint1_radial_2913_5676)" />
         </G>
       </G>
       <Defs>

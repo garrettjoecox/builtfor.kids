@@ -1,5 +1,6 @@
-import React, { forwardRef } from 'react';
 import type { VariantProps } from '@gluestack-ui/nativewind-utils';
+import type React from 'react';
+import { forwardRef } from 'react';
 import { Animated, Easing, Platform, View } from 'react-native';
 import { skeletonStyle, skeletonTextStyle } from './styles';
 
@@ -16,22 +17,8 @@ type ISkeletonTextProps = React.ComponentProps<typeof View> &
     startColor?: string;
   };
 
-const Skeleton = forwardRef<
-  React.ElementRef<typeof Animated.View>,
-  ISkeletonProps
->(
-  (
-    {
-      className,
-      variant,
-      children,
-      startColor = 'bg-background-200',
-      isLoaded = false,
-      speed = 2,
-      ...props
-    },
-    ref
-  ) => {
+const Skeleton = forwardRef<React.ElementRef<typeof Animated.View>, ISkeletonProps>(
+  ({ className, variant, children, startColor = 'bg-background-200', isLoaded = false, speed = 2, ...props }, ref) => {
     const pulseAnim = new Animated.Value(1);
     const customTimingFunction = Easing.bezier(0.4, 0, 0.6, 1);
     const fadeDuration = 0.6;
@@ -76,25 +63,11 @@ const Skeleton = forwardRef<
 
       return children;
     }
-  }
+  },
 );
 
-const SkeletonText = forwardRef<
-  React.ElementRef<typeof View>,
-  ISkeletonTextProps
->(
-  (
-    {
-      className,
-      _lines,
-      isLoaded = false,
-      startColor = 'bg-background-200',
-      gap = 2,
-      children,
-      ...props
-    },
-    ref
-  ) => {
+const SkeletonText = forwardRef<React.ElementRef<typeof View>, ISkeletonTextProps>(
+  ({ className, _lines, isLoaded = false, startColor = 'bg-background-200', gap = 2, children, ...props }, ref) => {
     if (!isLoaded) {
       if (_lines) {
         return (
@@ -129,7 +102,7 @@ const SkeletonText = forwardRef<
     } else {
       return children;
     }
-  }
+  },
 );
 
 Skeleton.displayName = 'Skeleton';

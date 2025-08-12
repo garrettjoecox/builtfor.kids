@@ -1,8 +1,9 @@
-import React, { forwardRef, memo } from 'react';
 import { H1, H2, H3, H4, H5, H6 } from '@expo/html-elements';
-import { headingStyle } from './styles';
 import type { VariantProps } from '@gluestack-ui/nativewind-utils';
 import { cssInterop } from 'nativewind';
+import type React from 'react';
+import { forwardRef, memo } from 'react';
+import { headingStyle } from './styles';
 
 type IHeadingProps = VariantProps<typeof headingStyle> &
   React.ComponentPropsWithoutRef<typeof H1> & {
@@ -18,21 +19,7 @@ cssInterop(H6, { className: 'style' });
 
 const MappedHeading = memo(
   forwardRef<React.ElementRef<typeof H1>, IHeadingProps>(
-    (
-      {
-        size,
-        className,
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
-        sub,
-        italic,
-        highlight,
-        ...props
-      },
-      ref
-    ) => {
+    ({ size, className, isTruncated, bold, underline, strikeThrough, sub, italic, highlight, ...props }, ref) => {
       switch (size) {
         case '5xl':
         case '4xl':
@@ -171,47 +158,35 @@ const MappedHeading = memo(
             />
           );
       }
-    }
-  )
+    },
+  ),
 );
 
 const Heading = memo(
-  forwardRef<React.ElementRef<typeof H1>, IHeadingProps>(
-    ({ className, size = 'lg', as: AsComp, ...props }, ref) => {
-      const {
-        isTruncated,
-        bold,
-        underline,
-        strikeThrough,
-        sub,
-        italic,
-        highlight,
-      } = props;
+  forwardRef<React.ElementRef<typeof H1>, IHeadingProps>(({ className, size = 'lg', as: AsComp, ...props }, ref) => {
+    const { isTruncated, bold, underline, strikeThrough, sub, italic, highlight } = props;
 
-      if (AsComp) {
-        return (
-          <AsComp
-            className={headingStyle({
-              size,
-              isTruncated,
-              bold,
-              underline,
-              strikeThrough,
-              sub,
-              italic,
-              highlight,
-              class: className,
-            })}
-            {...props}
-          />
-        );
-      }
-
+    if (AsComp) {
       return (
-        <MappedHeading className={className} size={size} ref={ref} {...props} />
+        <AsComp
+          className={headingStyle({
+            size,
+            isTruncated,
+            bold,
+            underline,
+            strikeThrough,
+            sub,
+            italic,
+            highlight,
+            class: className,
+          })}
+          {...props}
+        />
       );
     }
-  )
+
+    return <MappedHeading className={className} size={size} ref={ref} {...props} />;
+  }),
 );
 
 Heading.displayName = 'Heading';

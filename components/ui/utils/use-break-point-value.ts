@@ -1,8 +1,7 @@
-import { Dimensions, useWindowDimensions } from 'react-native';
 import { useEffect, useState } from 'react';
-
-import resolveConfig from 'tailwindcss/resolveConfig';
+import { Dimensions, useWindowDimensions } from 'react-native';
 import * as tailwindConfig from 'tailwind.config';
+import resolveConfig from 'tailwindcss/resolveConfig';
 
 const TailwindTheme = resolveConfig(tailwindConfig as any);
 const screenSize = TailwindTheme.theme.screens;
@@ -45,11 +44,10 @@ export const getBreakPointValue = (values: BreakPointValue, width: number) => {
   mediaQueriesBreakpoints.sort((a: any, b: any) => a.breakpoint - b.breakpoint);
 
   mediaQueriesBreakpoints.forEach((breakpoint: any, index: any) => {
-    breakpoint.value = values.hasOwnProperty(breakpoint.key)
+    breakpoint.value = Object.hasOwn(values, breakpoint.key)
       ? // @ts-ignore
         values[breakpoint.key]
-      : mediaQueriesBreakpoints[index - 1]?.value ||
-        mediaQueriesBreakpoints[0]?.value;
+      : mediaQueriesBreakpoints[index - 1]?.value || mediaQueriesBreakpoints[0]?.value;
   });
 
   const lastValidObject = getLastValidObject(mediaQueriesBreakpoints);
@@ -65,9 +63,7 @@ export const getBreakPointValue = (values: BreakPointValue, width: number) => {
 export function useBreakpointValue(values: BreakPointValue): any {
   const { width } = useWindowDimensions();
 
-  const [currentBreakPointValue, setCurrentBreakPointValue] = useState(
-    getBreakPointValue(values, width)
-  );
+  const [currentBreakPointValue, setCurrentBreakPointValue] = useState(getBreakPointValue(values, width));
 
   useEffect(() => {
     if (typeof values === 'object') {
@@ -81,10 +77,7 @@ export function useBreakpointValue(values: BreakPointValue): any {
   return currentBreakPointValue;
 }
 
-export function isValidBreakpoint(
-  breakPointWidth: any,
-  width: any = Dimensions.get('window')?.width
-) {
+export function isValidBreakpoint(breakPointWidth: any, width: any = Dimensions.get('window')?.width) {
   const windowWidth = width;
 
   if (windowWidth >= breakPointWidth) {
