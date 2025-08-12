@@ -1,7 +1,7 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, ScrollView } from 'react-native';
-import CoinSVG from '@/components/coins/CoinSVG';
+import Coin, { COINS } from '@/components/Coin';
 import DottedPattern from '@/components/DottedPattern';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -9,27 +9,8 @@ import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
 import { Text } from '@/components/ui/text';
 import { useProfileByName } from '@/hooks/useProfiles';
 
-// Coin values in cents
-const COINS = [
-  { name: 'penny', value: 1, size: 40, max: 4 },
-  { name: 'nickel', value: 5, size: 44, max: 1 },
-  { name: 'dime', value: 10, size: 36, max: 2 },
-  { name: 'quarter', value: 25, size: 48, max: 8 },
-] as const;
-
 // Number of correct answers needed to fill progress bar
 const MAX_PROGRESS = 10;
-
-// Component to render coin SVGs
-function CoinImage({ type, sizeMultiplier = 1 }: { type: (typeof COINS)[number]; sizeMultiplier?: number }) {
-  const size = type.size * sizeMultiplier;
-
-  return (
-    <Box className="shadow-lg">
-      <CoinSVG type={type.name} size={size} />
-    </Box>
-  );
-}
 
 function CoinGame() {
   // Target amount in cents (1-150)
@@ -171,7 +152,7 @@ function CoinGame() {
                   selectedCoins.map((coin) => (
                     <Box key={coin.id} className="shadow-md">
                       <Pressable onPress={() => removeCoin(coin.id)}>
-                        <CoinImage type={coin.type} sizeMultiplier={0.6} />
+                        <Coin type={coin.type} sizeMultiplier={0.6} />
                       </Pressable>
                     </Box>
                   ))
@@ -206,7 +187,7 @@ function CoinGame() {
                     onPress={() => addCoin(coin)}
                   >
                     <Box className="items-center">
-                      <CoinImage type={coin} sizeMultiplier={0.7} />
+                      <Coin type={coin} sizeMultiplier={0.7} />
                       <Text className="mt-2 text-sm font-bold text-stone-800 capitalize">{coin.name}</Text>
                       <Text className="text-xs text-stone-600 font-medium">{coin.value}¢</Text>
                     </Box>
