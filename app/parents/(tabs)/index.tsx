@@ -1,4 +1,5 @@
 import { formatDistanceStrict } from 'date-fns';
+import { Link } from 'expo-router';
 import DottedPattern from '@/components/DottedPattern';
 import { Avatar } from '@/components/ui/avatar';
 import { Box } from '@/components/ui/box';
@@ -21,9 +22,17 @@ export default function Kids() {
       <Box className="flex-1 border-b-4 border-stone-700">
         <Box className="bg-stone-900 border-b-4 border-stone-700 p-4" style={{ zIndex: 1 }}>
           <Heading size="4xl">Kids</Heading>
-          <Button action="positive" className="rounded-full h-20 w-20 absolute right-4 top-[20px]">
-            <ButtonIcon as={AddIcon} width={30} height={30} color="black" />
-          </Button>
+          <Link
+            href={{
+              pathname: '/modal',
+              params: { mode: 'create' },
+            }}
+            asChild
+          >
+            <Button action="positive" className="rounded-full h-20 w-20 absolute right-4 top-[20px]">
+              <ButtonIcon as={AddIcon} width={30} height={30} color="black" />
+            </Button>
+          </Link>
         </Box>
         <DottedPattern />
 
@@ -39,9 +48,17 @@ export default function Kids() {
                   <Text>{formatDistanceStrict(profile.dob, new Date())} old</Text>
                 </VStack>
                 <HStack>
-                  <Button variant="link" className="p-4">
-                    <ButtonIcon as={EditIcon} width={32} height={32} color="white" />
-                  </Button>
+                  <Link
+                    href={{
+                      pathname: '/modal',
+                      params: { mode: 'edit', profileName: profile.name },
+                    }}
+                    asChild
+                  >
+                    <Button variant="link" className="p-4">
+                      <ButtonIcon as={EditIcon} width={32} height={32} color="white" />
+                    </Button>
+                  </Link>
                   <Button variant="link" className="p-4">
                     <ButtonIcon as={PlayIcon} width={32} height={32} color="white" />
                   </Button>
