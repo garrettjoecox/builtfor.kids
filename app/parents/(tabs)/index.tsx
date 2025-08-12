@@ -1,5 +1,4 @@
 import { formatDistanceStrict } from 'date-fns';
-import { Link } from 'expo-router';
 import DottedPattern from '@/components/DottedPattern';
 import { Avatar } from '@/components/ui/avatar';
 import { Box } from '@/components/ui/box';
@@ -31,32 +30,21 @@ export default function Kids() {
         {Object.keys(profiles).length > 0 ? (
           <ScrollView contentContainerStyle={{ padding: 12 }}>
             {Object.values(profiles).map((profile) => (
-              <HStack
-                key={profile.name}
-                className="m-3 items-center bg-stone-800 border-2 border-stone-700 rounded-lg shadow-md"
-              >
+              <HStack key={profile.name} className="m-3 items-center bg-stone-800 border-2 border-stone-700 rounded-lg">
                 <Avatar className={`m-3 bg-pink-400 bg-green-400 bg-blue-400 bg-purple-400 bg-${profile.color}-400`}>
-                  <Text size="2xl">{profile.emoji}</Text>
+                  <Text size="3xl">{profile.emoji}</Text>
                 </Avatar>
                 <VStack className="flex-1 py-4">
                   <Heading className="font-bold text-xl">{profile.name}</Heading>
                   <Text>{formatDistanceStrict(profile.dob, new Date())} old</Text>
                 </VStack>
                 <HStack>
-                  <Button variant="link" className="p-4 h-full">
+                  <Button variant="link" className="p-4">
                     <ButtonIcon as={EditIcon} width={32} height={32} color="white" />
                   </Button>
-                  <Link
-                    asChild
-                    href={{
-                      pathname: '/kids/[profileName]',
-                      params: { profileName: profile.name },
-                    }}
-                  >
-                    <Button variant="link" className="p-4 h-full">
-                      <ButtonIcon as={PlayIcon} width={32} height={32} color="white" />
-                    </Button>
-                  </Link>
+                  <Button variant="link" className="p-4">
+                    <ButtonIcon as={PlayIcon} width={32} height={32} color="white" />
+                  </Button>
                 </HStack>
               </HStack>
             ))}
