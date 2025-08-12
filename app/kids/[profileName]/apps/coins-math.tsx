@@ -1,6 +1,7 @@
 import { Redirect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, ScrollView } from 'react-native';
+import CoinSVG from '@/components/coins/CoinSVG';
 import DottedPattern from '@/components/DottedPattern';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
@@ -10,29 +11,22 @@ import { useProfileByName } from '@/hooks/useProfiles';
 
 // Coin values in cents
 const COINS = [
-  { name: 'penny', value: 1, size: 40, max: 4, color: '#CD7F32' }, // Copper color
-  { name: 'nickel', value: 5, size: 44, max: 1, color: '#C0C0C0' }, // Silver color
-  { name: 'dime', value: 10, size: 36, max: 2, color: '#C0C0C0' }, // Silver color (smaller)
-  { name: 'quarter', value: 25, size: 48, max: 8, color: '#C0C0C0' }, // Silver color (largest)
-];
+  { name: 'penny', value: 1, size: 40, max: 4 },
+  { name: 'nickel', value: 5, size: 44, max: 1 },
+  { name: 'dime', value: 10, size: 36, max: 2 },
+  { name: 'quarter', value: 25, size: 48, max: 8 },
+] as const;
 
 // Number of correct answers needed to fill progress bar
 const MAX_PROGRESS = 10;
 
-// Component to render coin images as colored circles
+// Component to render coin SVGs
 function CoinImage({ type, sizeMultiplier = 1 }: { type: (typeof COINS)[number]; sizeMultiplier?: number }) {
   const size = type.size * sizeMultiplier;
 
   return (
-    <Box
-      className="rounded-full border-2 border-gray-400 shadow-lg items-center justify-center"
-      style={{
-        width: size,
-        height: size,
-        backgroundColor: type.color,
-      }}
-    >
-      <Text className="text-white font-bold text-xs">{type.value}¢</Text>
+    <Box className="shadow-lg">
+      <CoinSVG type={type.name} size={size} />
     </Box>
   );
 }
@@ -143,8 +137,8 @@ function CoinGame() {
 
         {/* Error message */}
         {errorMessage && (
-          <Box className="bg-red-100 p-4 absolute m-4 top-0 left-0 right-0 rounded-lg border-2 border-red-500 z-10">
-            <Text className="text-red-700 font-medium text-center">{errorMessage}</Text>
+          <Box className="bg-red-200 p-4 absolute m-4 top-0 left-0 right-0 rounded-lg border-4 border-red-500 z-10 shadow-lg">
+            <Text className="text-red-800 font-bold text-center">{errorMessage}</Text>
           </Box>
         )}
 
@@ -152,9 +146,12 @@ function CoinGame() {
           {/* Header with progress and target amount */}
           <Box className="gap-4">
             <Box className="w-full">
-              <Progress className="w-full h-4 bg-white rounded-full shadow-lg" value={(progress / MAX_PROGRESS) * 100}>
+              <Progress
+                className="w-full h-4 bg-stone-300 rounded-full shadow-inner border-2 border-stone-400"
+                value={(progress / MAX_PROGRESS) * 100}
+              >
                 <ProgressFilledTrack
-                  className="bg-green-500 h-full rounded-full"
+                  className="bg-green-500 h-full rounded-full shadow-sm"
                   style={{ width: `${(progress / MAX_PROGRESS) * 100}%` }}
                 />
               </Progress>
@@ -165,14 +162,14 @@ function CoinGame() {
           </Box>
 
           {/* Coin pool */}
-          <Box className="flex-1 bg-blue-200 rounded-lg p-4 border-4 border-blue-400">
+          <Box className="flex-1 bg-stone-200 rounded-lg p-4 border-4 border-stone-400 shadow-inner">
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Box className="flex-row flex-wrap justify-center items-center gap-2">
                 {selectedCoins.length === 0 ? (
-                  <Text className="p-4 text-gray-500 italic">Click on coins below to add them here</Text>
+                  <Text className="p-4 text-stone-600 italic text-center">Tap coins below to add them here</Text>
                 ) : (
                   selectedCoins.map((coin) => (
-                    <Box key={coin.id}>
+                    <Box key={coin.id} className="shadow-md">
                       <Pressable onPress={() => removeCoin(coin.id)}>
                         <CoinImage type={coin.type} sizeMultiplier={0.6} />
                       </Pressable>
@@ -186,25 +183,32 @@ function CoinGame() {
           {/* Footer */}
           <Box className="gap-4">
             {gameState === 'correct' ? (
-              <Box className="bg-green-100 p-4 rounded-lg border-2 border-green-500 items-center">
-                <Text className="text-green-700 text-xl font-bold">🎉 Correct! Great job! 🎉</Text>
+              <Box className="bg-green-200 p-4 rounded-lg border-4 border-green-500 items-center shadow-lg">
+                <Text className="text-green-800 text-xl font-bold">🎉 Correct! Great job! 🎉</Text>
               </Box>
             ) : (
               <Box className="items-center">
-                <Button onPress={checkAnswer} className="bg-green-500 px-8 py-2 rounded-full">
-                  <ButtonText className="text-white text-lg">Check Answer</ButtonText>
+                <Button
+                  onPress={checkAnswer}
+                  className="bg-stone-600 border-2 border-stone-700 px-8 py-2 rounded-full shadow-lg"
+                >
+                  <ButtonText className="text-white text-lg font-bold">Check Answer</ButtonText>
                 </Button>
               </Box>
             )}
 
-            <Box className="bg-yellow-100 rounded-lg p-4 border-4 border-yellow-300">
+            <Box className="bg-stone-300 rounded-lg p-4 border-4 border-stone-500 shadow-inner">
               <Box className="flex-row justify-center gap-4 flex-wrap">
                 {COINS.map((coin) => (
-                  <Pressable key={coin.name} className="items-center" onPress={() => addCoin(coin)}>
-                    <Box>
-                      <CoinImage type={coin} sizeMultiplier={0.6} />
-                      <Text className="mt-2 text-sm font-medium text-center">{coin.name}</Text>
-                      <Text className="text-xs text-gray-600 text-center">{coin.value}¢</Text>
+                  <Pressable
+                    key={coin.name}
+                    className="items-center active:scale-95 shadow-lg"
+                    onPress={() => addCoin(coin)}
+                  >
+                    <Box className="items-center">
+                      <CoinImage type={coin} sizeMultiplier={0.7} />
+                      <Text className="mt-2 text-sm font-bold text-stone-800 capitalize">{coin.name}</Text>
+                      <Text className="text-xs text-stone-600 font-medium">{coin.value}¢</Text>
                     </Box>
                   </Pressable>
                 ))}
