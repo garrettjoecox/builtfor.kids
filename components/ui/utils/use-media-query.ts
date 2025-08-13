@@ -1,11 +1,6 @@
 import { useWindowDimensions } from 'react-native';
 
-type QueryKeys =
-  | 'maxWidth'
-  | 'minWidth'
-  | 'maxHeight'
-  | 'minHeight'
-  | 'orientation';
+type QueryKeys = 'maxWidth' | 'minWidth' | 'maxHeight' | 'minHeight' | 'orientation';
 
 type SubQuery = {
   [queryKey in QueryKeys]?: number | string;
@@ -29,11 +24,7 @@ function queryResolver(query: any, width?: number, height?: number) {
   return true;
 }
 
-function iterateQuery(
-  query: SubQuery | Query,
-  height?: number,
-  width?: number
-) {
+function iterateQuery(query: SubQuery | Query, height?: number, width?: number) {
   const queryResults = [];
   if (Array.isArray(query)) {
     query.forEach((subQuery: SubQuery) => {
@@ -45,12 +36,7 @@ function iterateQuery(
   return queryResults;
 }
 
-function calculateQuery(
-  key: string,
-  val?: number | string,
-  height?: number,
-  width?: number
-) {
+function calculateQuery(key: string, val?: number | string, height?: number, width?: number) {
   let retval;
   switch (key) {
     case 'maxWidth':
