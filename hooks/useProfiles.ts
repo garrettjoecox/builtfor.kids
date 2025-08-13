@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { DEFAULT_APP_CONFIG } from '@/constants/Apps';
 import type { Profile } from '@/types/profile';
 
-const PROFILES: Profile[] = [
+const INITIAL_PROFILES: Profile[] = [
   {
     name: 'Garrett',
     color: 'orange',
@@ -12,8 +12,38 @@ const PROFILES: Profile[] = [
   },
 ];
 
+// Global state for profiles
+let globalProfiles = [...INITIAL_PROFILES];
+let profilesListeners: Array<() => void> = [];
+
+export function addProfile(profile: Profile) {
+  globalProfiles = [...globalProfiles, profile];
+  profilesListeners.forEach((listener) => listener());
+}
+
+export function updateProfile(name: string, updatedProfile: Profile) {
+  globalProfiles = globalProfiles.map((profile) => (profile.name === name ? updatedProfile : profile));
+  profilesListeners.forEach((listener) => listener());
+}
+
+export function deleteProfile(name: string) {
+  globalProfiles = globalProfiles.filter((profile) => profile.name !== name);
+  profilesListeners.forEach((listener) => listener());
+}
+
 export default function useAllProfiles() {
-  return PROFILES.reduce((acc: Record<string, Profile>, profile) => {
+  const [, forceUpdate] = useState({});
+
+  // Subscribe to profile changes
+  React.useEffect(() => {
+    const rerender = () => forceUpdate({});
+    profilesListeners.push(rerender);
+    return () => {
+      profilesListeners = profilesListeners.filter((listener) => listener !== rerender);
+    };
+  }, []);
+
+  return globalProfiles.reduce((acc: Record<string, Profile>, profile) => {
     acc[profile.name] = profile;
     return acc;
   }, {});
