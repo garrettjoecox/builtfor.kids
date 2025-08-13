@@ -15,15 +15,13 @@ import { DEFAULT_APP_CONFIG } from '@/constants/Apps';
 import { deleteProfile, updateProfile, useProfileByName } from '@/hooks/useProfiles';
 
 const COLOR_OPTIONS = [
-  { name: 'Pink', value: 'pink' },
-  { name: 'Yellow', value: 'yellow' },
-  { name: 'Orange', value: 'orange' },
-  { name: 'Green', value: 'green' },
-  { name: 'Blue', value: 'blue' },
-  { name: 'Purple', value: 'purple' },
+  { name: 'Pink', value: 'pink', bgColor: '#EC4899', textColor: '#FFFFFF' },
+  { name: 'Yellow', value: 'yellow', bgColor: '#EAB308', textColor: '#000000' },
+  { name: 'Orange', value: 'orange', bgColor: '#F97316', textColor: '#FFFFFF' },
+  { name: 'Green', value: 'green', bgColor: '#22C55E', textColor: '#FFFFFF' },
+  { name: 'Blue', value: 'blue', bgColor: '#3B82F6', textColor: '#FFFFFF' },
+  { name: 'Purple', value: 'purple', bgColor: '#A855F7', textColor: '#FFFFFF' },
 ];
-
-const EMOJI_OPTIONS = ['👶', '👧', '👦', '👨', '👩', '🧒', '👨‍💻', '👩‍💻', '🎨', '🎭', '🎯', '⚽'];
 
 export default function EditProfileScreen() {
   const { profileName } = useLocalSearchParams();
@@ -32,10 +30,23 @@ export default function EditProfileScreen() {
   const [name, setName] = useState(existingProfile?.name || '');
   const [selectedColor, setSelectedColor] = useState(existingProfile?.color || 'blue');
   const [selectedEmoji, setSelectedEmoji] = useState(existingProfile?.emoji || '👶');
+  const [dateOfBirth, setDateOfBirth] = useState(
+    existingProfile?.dob ? existingProfile.dob.toISOString().split('T')[0] : '',
+  );
 
   const handleSave = () => {
     if (!name.trim()) {
       Alert.alert('Error', 'Please enter a name');
+      return;
+    }
+
+    if (!selectedEmoji.trim()) {
+      Alert.alert('Error', 'Please select an emoji');
+      return;
+    }
+
+    if (!dateOfBirth) {
+      Alert.alert('Error', 'Please enter a date of birth');
       return;
     }
 
@@ -47,8 +58,8 @@ export default function EditProfileScreen() {
     const profileData = {
       name: name.trim(),
       color: selectedColor,
-      emoji: selectedEmoji,
-      dob: existingProfile.dob,
+      emoji: selectedEmoji.trim(),
+      dob: new Date(dateOfBirth),
       appConfig: existingProfile.appConfig || DEFAULT_APP_CONFIG,
     };
 
@@ -108,6 +119,22 @@ export default function EditProfileScreen() {
               </Input>
             </VStack>
 
+            {/* Date of Birth Input */}
+            <VStack className="space-y-2">
+              <Text className="text-lg font-semibold">Date of Birth</Text>
+              <Input variant="outline" size="lg">
+                <InputField
+                  placeholder="YYYY-MM-DD"
+                  value={dateOfBirth}
+                  onChangeText={setDateOfBirth}
+                  keyboardType="numeric"
+                />
+              </Input>
+              <Text size="sm" className="text-gray-400">
+                Format: YYYY-MM-DD (e.g., 2015-03-15)
+              </Text>
+            </VStack>
+
             {/* Color Selection */}
             <VStack className="space-y-2">
               <Text className="text-lg font-semibold">Color</Text>
@@ -116,12 +143,23 @@ export default function EditProfileScreen() {
                   <Button
                     key={color.value}
                     variant={selectedColor === color.value ? 'solid' : 'outline'}
-                    action={selectedColor === color.value ? 'primary' : 'secondary'}
-                    size="sm"
-                    className={`bg-${color.value}-400 border-${color.value}-400`}
+                    size="md"
+                    className="px-4 py-2 min-w-20"
+                    style={{
+                      backgroundColor: selectedColor === color.value ? color.bgColor : 'transparent',
+                      borderColor: color.bgColor,
+                      borderWidth: 2,
+                    }}
                     onPress={() => setSelectedColor(color.value)}
                   >
-                    <ButtonText>{color.name}</ButtonText>
+                    <ButtonText
+                      style={{
+                        color: selectedColor === color.value ? color.textColor : color.bgColor,
+                        fontWeight: '600',
+                      }}
+                    >
+                      {color.name}
+                    </ButtonText>
                   </Button>
                 ))}
               </HStack>
@@ -130,20 +168,17 @@ export default function EditProfileScreen() {
             {/* Emoji Selection */}
             <VStack className="space-y-2">
               <Text className="text-lg font-semibold">Emoji</Text>
-              <HStack className="flex-wrap gap-2">
-                {EMOJI_OPTIONS.map((emoji) => (
-                  <Button
-                    key={emoji}
-                    variant={selectedEmoji === emoji ? 'solid' : 'outline'}
-                    action={selectedEmoji === emoji ? 'primary' : 'secondary'}
-                    size="lg"
-                    className="w-16 h-16"
-                    onPress={() => setSelectedEmoji(emoji)}
-                  >
-                    <Text size="2xl">{emoji}</Text>
-                  </Button>
-                ))}
-              </HStack>
+              <Input variant="outline" size="lg">
+                <InputField
+                  placeholder="Tap to select an emoji 😊"
+                  value={selectedEmoji}
+                  onChangeText={setSelectedEmoji}
+                  style={{ fontSize: 18 }}
+                />
+              </Input>
+              <Text size="sm" className="text-gray-400">
+                Tap in the field above and use your device's emoji keyboard
+              </Text>
             </VStack>
 
             {/* Action Buttons */}
