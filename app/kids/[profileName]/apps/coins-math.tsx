@@ -8,12 +8,10 @@ import { Button, ButtonText } from '@/components/ui/button';
 import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
 import { Text } from '@/components/ui/text';
 import { useProfileByName } from '@/hooks/useProfiles';
+import type { CoinsMathConfig } from '@/types/app';
 
-// Number of correct answers needed to fill progress bar
-const MAX_PROGRESS = 10;
-
-function CoinGame() {
-  // Target amount in cents (1-150)
+function CoinGame({ config }: { config: CoinsMathConfig }) {
+  // Target amount in cents (based on config bounds)
   const [targetAmount, setTargetAmount] = useState(0);
   // Selected coins with unique IDs
   const [selectedCoins, setSelectedCoins] = useState<Array<{ id: number; type: (typeof COINS)[number] }>>([]);
@@ -28,13 +26,14 @@ function CoinGame() {
 
   // Initialize or reset the game
   const resetGame = useCallback(() => {
-    // Random amount between 1 and 150 cents
-    const newAmount = Math.floor(Math.random() * 150) + 1;
+    // Random amount between lowerBound and upperBound cents
+    const range = config.upperBound - config.lowerBound + 1;
+    const newAmount = Math.floor(Math.random() * range) + config.lowerBound;
     setTargetAmount(newAmount);
     setSelectedCoins([]);
     setGameState('playing');
     setErrorMessage(null);
-  }, []);
+  }, [config.lowerBound, config.upperBound]);
 
   // Initialize game on first load
   useEffect(() => {
@@ -56,7 +55,7 @@ function CoinGame() {
     if (gameState === 'playing') {
       const coinCount = selectedCoins.filter((coin) => coin.type.name === coinType.name).length;
 
-      if (coinCount >= coinType.max) {
+      if (config.preventOveruse && coinCount >= coinType.max) {
         setErrorMessage('Try something else!');
         return;
       }
@@ -95,7 +94,11 @@ function CoinGame() {
       setGameState('correct');
       setProgress(progress + 1);
     } else {
-      setErrorMessage(`Wrong! You have ${formatMoney(totalValue)}, try again.`);
+      if (config.displayAmountWhenWrong) {
+        setErrorMessage(`Wrong! You have ${formatMoney(totalValue)}, try again.`);
+      } else {
+        setErrorMessage('Wrong! Try again.');
+      }
     }
   };
 
@@ -126,17 +129,19 @@ function CoinGame() {
         <Box className="flex-1 p-4 gap-4">
           {/* Header with progress and target amount */}
           <Box className="gap-4">
-            <Box className="w-full">
-              <Progress
-                className="w-full h-4 bg-stone-300 rounded-full shadow-inner border-2 border-stone-400"
-                value={(progress / MAX_PROGRESS) * 100}
-              >
-                <ProgressFilledTrack
-                  className="bg-green-500 h-full rounded-full shadow-sm"
-                  style={{ width: `${(progress / MAX_PROGRESS) * 100}%` }}
-                />
-              </Progress>
-            </Box>
+            {config.showProgressBar && (
+              <Box className="w-full">
+                <Progress
+                  className="w-full h-4 bg-stone-300 rounded-full shadow-inner border-2 border-stone-400"
+                  value={(progress / config.progressPerAnswer) * 100}
+                >
+                  <ProgressFilledTrack
+                    className="bg-green-500 h-full rounded-full shadow-sm"
+                    style={{ width: `${(progress / config.progressPerAnswer) * 100}%` }}
+                  />
+                </Progress>
+              </Box>
+            )}
             <Box className="items-center">
               <Text className="text-6xl font-bold text-green-600">{formatMoney(targetAmount)}</Text>
             </Box>
@@ -150,11 +155,11 @@ function CoinGame() {
                   <Text className="p-4 text-stone-600 italic text-center">Tap coins below to add them here</Text>
                 ) : (
                   selectedCoins.map((coin) => (
-                    <Box key={coin.id} className="shadow-md">
-                      <Pressable onPress={() => removeCoin(coin.id)}>
+                    <Pressable key={coin.id} onPress={() => removeCoin(coin.id)}>
+                      <Box className="shadow-md">
                         <Coin type={coin.type} sizeMultiplier={0.6} />
-                      </Pressable>
-                    </Box>
+                      </Box>
+                    </Pressable>
                   ))
                 )}
               </Box>
@@ -171,9 +176,9 @@ function CoinGame() {
               <Box className="items-center">
                 <Button
                   onPress={checkAnswer}
-                  className="bg-stone-600 border-2 border-stone-700 px-8 py-2 rounded-full shadow-lg"
+                  className="bg-stone-600 border-2 border-stone-700 rounded-full shadow-lg px-6 py-3"
                 >
-                  <ButtonText className="text-white text-lg font-bold">Check Answer</ButtonText>
+                  <ButtonText className="text-white text-base font-bold">Check Answer</ButtonText>
                 </Button>
               </Box>
             )}
@@ -186,11 +191,13 @@ function CoinGame() {
                     className="items-center active:scale-95 shadow-lg"
                     onPress={() => addCoin(coin)}
                   >
-                    <Box className="items-center">
-                      <Coin type={coin} sizeMultiplier={0.7} />
+                    <Coin type={coin} sizeMultiplier={0.7} />
+                    {config.displayCoinName && (
                       <Text className="mt-2 text-sm font-bold text-stone-800 capitalize">{coin.name}</Text>
+                    )}
+                    {config.displayCoinValue && (
                       <Text className="text-xs text-stone-600 font-medium">{coin.value}¢</Text>
-                    </Box>
+                    )}
                   </Pressable>
                 ))}
               </Box>
@@ -210,5 +217,7 @@ export default function CoinsMath() {
     return <Redirect href="/" />;
   }
 
-  return <CoinGame />;
+  const config = profile.appConfig['coins-math'];
+
+  return <CoinGame config={config} />;
 }
