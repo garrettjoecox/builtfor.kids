@@ -1,8 +1,8 @@
-import { VStack } from '@/components/ui/vstack';
 import { HStack } from '@/components/ui/hstack';
-import { Text } from '@/components/ui/text';
 import { Input, InputField } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 import type { CoinsMathConfig } from '@/types/app';
 
 interface CoinsMathConfigFormProps {
@@ -22,7 +22,9 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
         <Text className="text-sm font-semibold">Range Settings</Text>
         <HStack className="space-x-4">
           <VStack className="flex-1 space-y-1">
-            <Text size="sm" className="text-gray-400">Lower Bound</Text>
+            <Text size="sm" className="text-gray-400">
+              Lower Bound
+            </Text>
             <Input variant="outline" size="sm">
               <InputField
                 value={config.lowerBound.toString()}
@@ -36,7 +38,9 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
             </Input>
           </VStack>
           <VStack className="flex-1 space-y-1">
-            <Text size="sm" className="text-gray-400">Upper Bound</Text>
+            <Text size="sm" className="text-gray-400">
+              Upper Bound
+            </Text>
             <Input variant="outline" size="sm">
               <InputField
                 value={config.upperBound.toString()}
@@ -55,7 +59,7 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
       {/* Display Options */}
       <VStack className="space-y-3">
         <Text className="text-sm font-semibold">Display Options</Text>
-        
+
         <HStack className="justify-between items-center">
           <Text size="sm">Display Coin Name</Text>
           <Switch
@@ -87,7 +91,7 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
       {/* Progress Settings */}
       <VStack className="space-y-3">
         <Text className="text-sm font-semibold">Progress Settings</Text>
-        
+
         <HStack className="justify-between items-center">
           <Text size="sm">Show Progress Bar</Text>
           <Switch
@@ -99,7 +103,9 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
 
         {config.showProgressBar && (
           <VStack className="space-y-1">
-            <Text size="sm" className="text-gray-400">Progress Per Answer (%)</Text>
+            <Text size="sm" className="text-gray-400">
+              Progress Per Answer (%)
+            </Text>
             <Input variant="outline" size="sm">
               <InputField
                 value={config.progressPerAnswer.toString()}
@@ -118,11 +124,13 @@ export function CoinsMathConfigForm({ config, onConfigChange }: CoinsMathConfigF
       {/* Other Settings */}
       <VStack className="space-y-3">
         <Text className="text-sm font-semibold">Other Settings</Text>
-        
+
         <HStack className="justify-between items-center">
           <VStack className="flex-1">
             <Text size="sm">Prevent Overuse</Text>
-            <Text size="xs" className="text-gray-400">Limit session time to prevent addiction</Text>
+            <Text size="xs" className="text-gray-400">
+              Limit session time to prevent addiction
+            </Text>
           </VStack>
           <Switch
             value={config.preventOveruse}

@@ -1,7 +1,8 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, Platform } from 'react-native';
+import { AppConfigSection } from '@/components/AppConfig/AppConfigSection';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
@@ -13,8 +14,7 @@ import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
 import { APPS, DEFAULT_APP_CONFIG } from '@/constants/Apps';
 import { deleteProfile, updateProfile, useProfileByName } from '@/hooks/useProfiles';
-import { AppConfigSection } from '@/components/AppConfig/AppConfigSection';
-import type { AppConfig } from '@/types/app';
+import type { AppConfig, BaseAppConfig } from '@/types/app';
 
 const COLOR_OPTIONS = [
   { name: 'Pink', value: 'pink', bgColor: '#EC4899', textColor: '#FFFFFF' },
@@ -35,12 +35,21 @@ export default function EditProfileScreen() {
   const [dateOfBirth, setDateOfBirth] = useState(
     existingProfile?.dob ? existingProfile.dob.toISOString().split('T')[0] : '',
   );
-  const [appConfig, setAppConfig] = useState<AppConfig>(
-    existingProfile?.appConfig || DEFAULT_APP_CONFIG,
-  );
+  const [appConfig, setAppConfig] = useState<AppConfig>(DEFAULT_APP_CONFIG);
 
-  const updateAppConfig = (appId: keyof AppConfig, newConfig: any) => {
-    setAppConfig(prev => ({
+  // Update state when profile loads
+  useEffect(() => {
+    if (existingProfile) {
+      setName(existingProfile.name);
+      setSelectedColor(existingProfile.color);
+      setSelectedEmoji(existingProfile.emoji);
+      setDateOfBirth(existingProfile.dob.toISOString().split('T')[0]);
+      setAppConfig(existingProfile.appConfig);
+    }
+  }, [existingProfile]);
+
+  const updateAppConfig = (appId: keyof AppConfig, newConfig: BaseAppConfig) => {
+    setAppConfig((prev) => ({
       ...prev,
       [appId]: newConfig,
     }));
@@ -76,7 +85,7 @@ export default function EditProfileScreen() {
     };
 
     updateProfile(existingProfile.name, profileData);
-    router.back();
+    router.push(`/kids/${profileData.name}`);
   };
 
   const handleDelete = () => {
@@ -89,14 +98,14 @@ export default function EditProfileScreen() {
         style: 'destructive',
         onPress: () => {
           deleteProfile(existingProfile.name);
-          router.back();
+          router.push('/');
         },
       },
     ]);
   };
 
   const handleCancel = () => {
-    router.back();
+    router.push(`/kids/${existingProfile?.name || profileName}`);
   };
 
   if (!existingProfile) {
@@ -199,7 +208,7 @@ export default function EditProfileScreen() {
               <Text size="sm" className="text-gray-400">
                 Control which apps are visible and configure their settings
               </Text>
-              
+
               {Object.entries(APPS).map(([appId, app]) => (
                 <AppConfigSection
                   key={appId}

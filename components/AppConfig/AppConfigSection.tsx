@@ -1,10 +1,10 @@
-import { VStack } from '@/components/ui/vstack';
-import { HStack } from '@/components/ui/hstack';
-import { Text } from '@/components/ui/text';
-import { Switch } from '@/components/ui/switch';
 import { Avatar } from '@/components/ui/avatar';
+import { HStack } from '@/components/ui/hstack';
+import { Switch } from '@/components/ui/switch';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import type { AppConfig, BaseAppConfig, CoinsMathConfig } from '@/types/app';
 import { CoinsMathConfigForm } from './CoinsMathConfig';
-import type { AppConfig, BaseAppConfig } from '@/types/app';
 
 interface AppConfigSectionProps {
   appId: keyof AppConfig;
@@ -32,12 +32,7 @@ export function AppConfigSection({
 
     switch (appId) {
       case 'coins-math':
-        return (
-          <CoinsMathConfigForm
-            config={config as any}
-            onConfigChange={onConfigChange as any}
-          />
-        );
+        return <CoinsMathConfigForm config={config as CoinsMathConfig} onConfigChange={onConfigChange as (config: CoinsMathConfig) => void} />;
       // Future app configs can be added here
       // case 'paint':
       //   return <PaintConfigForm config={config} onConfigChange={onConfigChange} />;
@@ -67,11 +62,7 @@ export function AppConfigSection({
             </Text>
           </VStack>
         </HStack>
-        <Switch
-          value={config.visible}
-          onValueChange={updateVisibility}
-          size="md"
-        />
+        <Switch value={config.visible} onValueChange={updateVisibility} size="md" />
       </HStack>
 
       {/* App-Specific Configuration */}
