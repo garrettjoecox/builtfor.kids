@@ -25,6 +25,8 @@ export interface CoinsCountConfig extends BaseAppConfig {
 
 export interface AnalogClockGuessConfig extends BaseAppConfig {
   granularity: 'hour' | '30-minutes' | '15-minutes' | '5-minutes' | '1-minute';
+  showProgressBar: boolean;
+  progressPerAnswer: number;
 }
 
 export interface AnalogClockMoveConfig extends BaseAppConfig {
