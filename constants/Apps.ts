@@ -27,12 +27,12 @@ export const APPS = {
   //   emoji: '💰',
   //   color: 'blue',
   // },
-  // 'analog-clock-guess': {
-  //   id: 'analog-clock-guess',
-  //   name: 'Analog Clock Guess',
-  //   emoji: '🕰️',
-  //   color: 'purple',
-  // },
+  'analog-clock-guess': {
+    id: 'analog-clock-guess',
+    name: 'Analog Clock Guess',
+    emoji: '🕰️',
+    color: 'purple',
+  },
   // 'analog-clock-move': {
   //   id: 'analog-clock-move',
   //   name: 'Analog Clock Move',
