@@ -3,7 +3,9 @@ import { HStack } from '@/components/ui/hstack';
 import { Switch } from '@/components/ui/switch';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import type { AppConfig, BaseAppConfig, CoinsMathConfig } from '@/types/app';
+import type { AnalogClockGuessConfig, AppConfig, BaseAppConfig, CoinsCountConfig, CoinsMathConfig } from '@/types/app';
+import { AnalogClockGuessConfigForm } from './AnalogClockGuessConfig';
+import { CoinsCountConfigForm } from './CoinsCountConfig';
 import { CoinsMathConfigForm } from './CoinsMathConfig';
 
 interface AppConfigSectionProps {
@@ -32,7 +34,26 @@ export function AppConfigSection({
 
     switch (appId) {
       case 'coins-math':
-        return <CoinsMathConfigForm config={config as CoinsMathConfig} onConfigChange={onConfigChange as (config: CoinsMathConfig) => void} />;
+        return (
+          <CoinsMathConfigForm
+            config={config as CoinsMathConfig}
+            onConfigChange={onConfigChange as (config: CoinsMathConfig) => void}
+          />
+        );
+      case 'coins-count':
+        return (
+          <CoinsCountConfigForm
+            config={config as CoinsCountConfig}
+            onConfigChange={onConfigChange as (config: CoinsCountConfig) => void}
+          />
+        );
+      case 'analog-clock-guess':
+        return (
+          <AnalogClockGuessConfigForm
+            config={config as AnalogClockGuessConfig}
+            onConfigChange={onConfigChange as (config: AnalogClockGuessConfig) => void}
+          />
+        );
       // Future app configs can be added here
       // case 'paint':
       //   return <PaintConfigForm config={config} onConfigChange={onConfigChange} />;
