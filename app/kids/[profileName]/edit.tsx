@@ -11,8 +11,10 @@ import { SafeAreaView } from '@/components/ui/safe-area-view';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
-import { DEFAULT_APP_CONFIG } from '@/constants/Apps';
+import { APPS, DEFAULT_APP_CONFIG } from '@/constants/Apps';
 import { deleteProfile, updateProfile, useProfileByName } from '@/hooks/useProfiles';
+import { AppConfigSection } from '@/components/AppConfig/AppConfigSection';
+import type { AppConfig } from '@/types/app';
 
 const COLOR_OPTIONS = [
   { name: 'Pink', value: 'pink', bgColor: '#EC4899', textColor: '#FFFFFF' },
@@ -33,6 +35,16 @@ export default function EditProfileScreen() {
   const [dateOfBirth, setDateOfBirth] = useState(
     existingProfile?.dob ? existingProfile.dob.toISOString().split('T')[0] : '',
   );
+  const [appConfig, setAppConfig] = useState<AppConfig>(
+    existingProfile?.appConfig || DEFAULT_APP_CONFIG,
+  );
+
+  const updateAppConfig = (appId: keyof AppConfig, newConfig: any) => {
+    setAppConfig(prev => ({
+      ...prev,
+      [appId]: newConfig,
+    }));
+  };
 
   const handleSave = () => {
     if (!name.trim()) {
@@ -60,7 +72,7 @@ export default function EditProfileScreen() {
       color: selectedColor,
       emoji: selectedEmoji.trim(),
       dob: new Date(dateOfBirth),
-      appConfig: existingProfile.appConfig || DEFAULT_APP_CONFIG,
+      appConfig,
     };
 
     updateProfile(existingProfile.name, profileData);
@@ -179,6 +191,26 @@ export default function EditProfileScreen() {
               <Text size="sm" className="text-gray-400">
                 Tap in the field above and use your device's emoji keyboard
               </Text>
+            </VStack>
+
+            {/* Apps Settings */}
+            <VStack className="space-y-4">
+              <Text className="text-lg font-semibold">Apps Settings</Text>
+              <Text size="sm" className="text-gray-400">
+                Control which apps are visible and configure their settings
+              </Text>
+              
+              {Object.entries(APPS).map(([appId, app]) => (
+                <AppConfigSection
+                  key={appId}
+                  appId={appId as keyof AppConfig}
+                  appName={app.name}
+                  appEmoji={app.emoji}
+                  appColor={app.color}
+                  config={appConfig[appId as keyof AppConfig]}
+                  onConfigChange={(newConfig) => updateAppConfig(appId as keyof AppConfig, newConfig)}
+                />
+              ))}
             </VStack>
 
             {/* Action Buttons */}
