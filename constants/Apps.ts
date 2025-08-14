@@ -54,8 +54,8 @@ export const PAINT_DEFAULT_CONFIG: PaintConfig = {
 
 export const COINS_MATH_DEFAULT_CONFIG: CoinsMathConfig = {
   visible: true,
-  lowerBound: 1,
-  upperBound: 10,
+  lowerBound: 6,
+  upperBound: 200,
   preventOveruse: true,
   displayCoinName: true,
   displayCoinValue: true,

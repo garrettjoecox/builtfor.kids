@@ -3894,8 +3894,8 @@ export const COINS = [
 export default function Coin({ type, sizeMultiplier = 1 }: { type: (typeof COINS)[number]; sizeMultiplier?: number }) {
   const size = type.size * sizeMultiplier;
   return (
-    <Box className="flex items-center justify-center" style={{ width: Math.max(size, 60), height: Math.max(size, 60) }}>
-      <Icon as={type.icon} width={size} height={size} className="rounded-full transition-transform hover:scale-105" />
+    <Box className="rounded-full shadow-md" style={{ width: Math.max(size, 60), height: Math.max(size, 60) }}>
+      <type.icon className="" />
     </Box>
   );
 }

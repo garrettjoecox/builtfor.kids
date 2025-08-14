@@ -1,11 +1,13 @@
 import { Link, Redirect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { Pressable, SafeAreaView, ScrollView } from 'react-native';
 import Coin, { COINS } from '@/components/Coin';
 import DottedPattern from '@/components/DottedPattern';
 import { Box } from '@/components/ui/box';
 import { Button, ButtonText } from '@/components/ui/button';
+import { Pressable } from '@/components/ui/pressable';
 import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
+import { SafeAreaView } from '@/components/ui/safe-area-view';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
 import { useProfileByName } from '@/hooks/useProfiles';
 import type { CoinsMathConfig } from '@/types/app';
@@ -139,13 +141,10 @@ function CoinGame({ config }: { config: CoinsMathConfig }) {
             {config.showProgressBar && (
               <Box className="w-full">
                 <Progress
-                  className="w-full h-4 bg-stone-300 rounded-full shadow-inner border-2 border-stone-400"
+                  className="w-full h-4 bg-stone-950 rounded-full shadow-md"
                   value={(progress / config.progressPerAnswer) * 100}
                 >
-                  <ProgressFilledTrack
-                    className="bg-green-500 h-full rounded-full shadow-sm"
-                    style={{ width: `${(progress / config.progressPerAnswer) * 100}%` }}
-                  />
+                  <ProgressFilledTrack className="bg-green-500 h-full rounded-full" />
                 </Progress>
               </Box>
             )}
@@ -155,7 +154,7 @@ function CoinGame({ config }: { config: CoinsMathConfig }) {
           </Box>
 
           {/* Coin pool */}
-          <Box className="flex-1 bg-stone-200 rounded-lg p-4 border-4 border-stone-400 shadow-inner">
+          <Box className="flex-1 bg-stone-800 rounded-lg p-4 border-4 border-stone-700 shadow-md">
             <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
               <Box className="flex-row flex-wrap justify-center items-center gap-2">
                 {selectedCoins.length === 0 ? (
@@ -163,8 +162,8 @@ function CoinGame({ config }: { config: CoinsMathConfig }) {
                 ) : (
                   selectedCoins.map((coin) => (
                     <Pressable key={coin.id} onPress={() => removeCoin(coin.id)}>
-                      <Box className="shadow-md">
-                        <Coin type={coin.type} sizeMultiplier={0.6} />
+                      <Box className="">
+                        <Coin type={coin.type} sizeMultiplier={0.7} />
                       </Box>
                     </Pressable>
                   ))
@@ -176,34 +175,27 @@ function CoinGame({ config }: { config: CoinsMathConfig }) {
           {/* Footer */}
           <Box className="gap-4">
             {gameState === 'correct' ? (
-              <Box className="bg-green-200 p-4 rounded-lg border-4 border-green-500 items-center shadow-lg">
-                <Text className="text-green-800 text-xl font-bold">🎉 Correct! Great job! 🎉</Text>
+              <Box className="p-4 rounded-lg border-4 items-center shadow-md">
+                <Text className="font-bold">🎉 Correct! Great job! 🎉</Text>
               </Box>
             ) : (
               <Box className="items-center">
-                <Button
-                  onPress={checkAnswer}
-                  className="bg-stone-600 border-2 border-stone-700 rounded-full shadow-lg px-6 py-3"
-                >
+                <Button onPress={checkAnswer} className="bg-stone-600 border-2 border-stone-700 rounded-full shadow-md">
                   <ButtonText className="text-white text-base font-bold">Check Answer</ButtonText>
                 </Button>
               </Box>
             )}
 
-            <Box className="bg-stone-300 rounded-lg p-4 border-4 border-stone-500 shadow-inner">
+            <Box className="bg-stone-900 rounded-lg p-4 border-4 border-stone-700 shadow-md">
               <Box className="flex-row justify-center gap-4 flex-wrap">
                 {COINS.map((coin) => (
-                  <Pressable
-                    key={coin.name}
-                    className="items-center active:scale-95 shadow-lg"
-                    onPress={() => addCoin(coin)}
-                  >
+                  <Pressable key={coin.name} className="items-center justify-end" onPress={() => addCoin(coin)}>
                     <Coin type={coin} sizeMultiplier={0.7} />
                     {config.displayCoinName && (
-                      <Text className="mt-2 text-sm font-bold text-stone-800 capitalize">{coin.name}</Text>
+                      <Text className="mt-2 text-sm font-bold text-stone-300 capitalize">{coin.name}</Text>
                     )}
                     {config.displayCoinValue && (
-                      <Text className="text-xs text-stone-600 font-medium">{coin.value}¢</Text>
+                      <Text className="text-xs text-stone-500 font-medium">{coin.value}¢</Text>
                     )}
                   </Pressable>
                 ))}
