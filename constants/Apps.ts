@@ -21,12 +21,12 @@ export const APPS = {
     emoji: '🪙',
     color: 'green',
   },
-  // 'coins-count': {
-  //   id: 'coins-count',
-  //   name: 'Coins Count',
-  //   emoji: '💰',
-  //   color: 'blue',
-  // },
+  'coins-count': {
+    id: 'coins-count',
+    name: 'Coins Count',
+    emoji: '💰',
+    color: 'blue',
+  },
   'analog-clock-guess': {
     id: 'analog-clock-guess',
     name: 'Analog Clock Guess',
