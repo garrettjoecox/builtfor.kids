@@ -40,12 +40,14 @@ export default function HomeScreen() {
             </Text>
             <Heading size="4xl">{profile.name}!</Heading>
           </VStack>
-          <Avatar
-            size="lg"
-            className={`m-3 bg-pink-400 bg-yellow-400 bg-orange-400 bg-green-400 bg-blue-400 bg-purple-400 bg-${profile.color}-400`}
-          >
-            <Text size="3xl">{profile.emoji}</Text>
-          </Avatar>
+          <Link href="/">
+            <Avatar
+              size="lg"
+              className={`m-3 bg-pink-400 bg-yellow-400 bg-orange-400 bg-green-400 bg-blue-400 bg-purple-400 bg-${profile.color}-400`}
+            >
+              <Text size="3xl">{profile.emoji}</Text>
+            </Avatar>
+          </Link>
         </HStack>
         <DottedPattern />
 

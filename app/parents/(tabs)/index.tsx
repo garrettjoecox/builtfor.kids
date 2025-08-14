@@ -33,9 +33,12 @@ export default function Kids() {
         {Object.keys(profiles).length > 0 ? (
           <ScrollView contentContainerStyle={{ padding: 12 }}>
             {Object.values(profiles).map((profile) => (
-              <HStack key={profile.name} className="m-3 items-center bg-stone-800 border-2 border-stone-700 rounded-lg">
+              <HStack
+                key={profile.name}
+                className="m-3 items-center bg-stone-800 border-2 border-stone-700 rounded-lg shadow-md"
+              >
                 <Avatar className={`m-3 bg-pink-400 bg-green-400 bg-blue-400 bg-purple-400 bg-${profile.color}-400`}>
-                  <Text size="3xl">{profile.emoji}</Text>
+                  <Text size="2xl">{profile.emoji}</Text>
                 </Avatar>
                 <VStack className="flex-1 py-4">
                   <Heading className="font-bold text-xl">{profile.name}</Heading>
@@ -43,13 +46,10 @@ export default function Kids() {
                 </VStack>
                 <HStack>
                   <Link href={`/kids/${profile.name}/edit`} asChild>
-                    <Button variant="link" className="p-4">
+                    <Button variant="link" className="p-4 h-full">
                       <ButtonIcon as={EditIcon} width={32} height={32} color="white" />
                     </Button>
                   </Link>
-                  <Button variant="link" className="p-4">
-                    <ButtonIcon as={PlayIcon} width={32} height={32} color="white" />
-                  </Button>
                 </HStack>
               </HStack>
             ))}
