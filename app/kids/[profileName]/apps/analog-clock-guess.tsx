@@ -11,9 +11,6 @@ import { Text } from '@/components/ui/text';
 import { useProfileByName } from '@/hooks/useProfiles';
 import type { AnalogClockGuessConfig } from '@/types/app';
 
-// Number of correct answers needed to fill progress bar
-const MAX_PROGRESS = 10;
-
 function AnalogClockGame({ config }: { config: AnalogClockGuessConfig }) {
   // Target time
   const [targetHour, setTargetHour] = useState(0);
@@ -131,7 +128,7 @@ function AnalogClockGame({ config }: { config: AnalogClockGuessConfig }) {
 
     const hourValue = parseInt(userGuess);
     if (hourValue >= 1 && hourValue <= 12) {
-      setUserGuess(userGuess + ':');
+      setUserGuess(`${userGuess}:`);
     }
   };
 
@@ -171,8 +168,7 @@ function AnalogClockGame({ config }: { config: AnalogClockGuessConfig }) {
       setProgress(progress + 1);
     } else {
       setGameState('incorrect');
-      const targetTimeStr = `${targetHour}:${targetMinute.toString().padStart(2, '0')}`;
-      setFeedbackMessage(`Try again! The correct time is ${targetTimeStr}`);
+      setFeedbackMessage('Try again!');
     }
   };
 
@@ -183,7 +179,7 @@ function AnalogClockGame({ config }: { config: AnalogClockGuessConfig }) {
     }
 
     if (!userGuess.includes(':')) {
-      return userGuess + ':--';
+      return `${userGuess}:--`;
     }
 
     const [hours, minutes] = userGuess.split(':');
@@ -276,14 +272,16 @@ function AnalogClockGame({ config }: { config: AnalogClockGuessConfig }) {
 
         <Box className="flex-1 p-4 gap-4">
           {/* Progress bar */}
-          <Box className="w-full">
-            <Progress
-              className="w-full h-4 bg-stone-950 rounded-full shadow-md"
-              value={(progress / MAX_PROGRESS) * 100}
-            >
-              <ProgressFilledTrack className="bg-purple-500 h-full rounded-full" />
-            </Progress>
-          </Box>
+          {config.showProgressBar && (
+            <Box className="w-full">
+              <Progress
+                className="w-full h-4 bg-stone-950 rounded-full shadow-md"
+                value={(progress / config.progressPerAnswer) * 100}
+              >
+                <ProgressFilledTrack className="bg-purple-500 h-full rounded-full" />
+              </Progress>
+            </Box>
+          )}
 
           {/* Instruction */}
           <Box className="items-center">

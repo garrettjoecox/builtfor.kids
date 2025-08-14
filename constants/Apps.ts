@@ -74,6 +74,8 @@ export const COINS_COUNT_DEFAULT_CONFIG: CoinsCountConfig = {
 export const ANALOG_CLOCK_GUESS_DEFAULT_CONFIG: AnalogClockGuessConfig = {
   visible: true,
   granularity: 'hour',
+  showProgressBar: true,
+  progressPerAnswer: 10,
 };
 
 export const ANALOG_CLOCK_MOVE_DEFAULT_CONFIG: AnalogClockMoveConfig = {
