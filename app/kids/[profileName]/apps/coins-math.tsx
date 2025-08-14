@@ -1,4 +1,4 @@
-import { Redirect, useLocalSearchParams } from 'expo-router';
+import { Link, Redirect, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { Pressable, SafeAreaView, ScrollView } from 'react-native';
 import Coin, { COINS } from '@/components/Coin';
@@ -116,7 +116,14 @@ function CoinGame({ config }: { config: CoinsMathConfig }) {
 
   return (
     <SafeAreaView className="bg-stone-900 flex-1">
-      <Box className="flex-1 border-y-4 border-stone-700 relative">
+      <Box className="flex-1 border-b-4 border-stone-700 relative">
+        <Box className="bg-stone-900 border-b-4 border-stone-700 items-start" style={{ zIndex: 1 }}>
+          <Link href="/" asChild>
+            <Button variant="link" className="px-3 mt-[-10px]">
+              <ButtonText>← Home</ButtonText>
+            </Button>
+          </Link>
+        </Box>
         <DottedPattern />
 
         {/* Error message */}

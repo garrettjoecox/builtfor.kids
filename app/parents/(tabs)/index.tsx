@@ -7,7 +7,7 @@ import { Button, ButtonIcon } from '@/components/ui/button';
 import { Center } from '@/components/ui/center';
 import { Heading } from '@/components/ui/heading';
 import { HStack } from '@/components/ui/hstack';
-import { AddIcon, EditIcon, PlayIcon } from '@/components/ui/icon';
+import { AddIcon, EditIcon } from '@/components/ui/icon';
 import { SafeAreaView } from '@/components/ui/safe-area-view';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Text } from '@/components/ui/text';
