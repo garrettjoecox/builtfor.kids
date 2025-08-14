@@ -1,7 +1,6 @@
 import { createIcon, Svg } from '@gluestack-ui/icon';
 import { Path } from 'react-native-svg';
 import { Box } from '@/components/ui/box';
-import { Icon } from '@/components/ui/icon';
 
 export const PennyIcon = createIcon({
   Root: Svg,
