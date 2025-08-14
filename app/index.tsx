@@ -47,7 +47,7 @@ export default function Landing() {
               </VStack>
             </Link>
           ))}
-          <Link href={{ pathname: '/parents' }}>
+          <Link href={{ pathname: '/parents/pin' }}>
             <VStack className="w-[150px] gap-4 p-4 items-center bg-stone-800 border-2 border-stone-700 rounded-lg shadow-md">
               <Avatar size="xl" className={`bg-red-400`}>
                 <Text size="4xl">⚙️</Text>
