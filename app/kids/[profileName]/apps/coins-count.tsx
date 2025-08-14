@@ -37,9 +37,9 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
 
   const checkAnswer = () => {
     if (!userGuess) return;
-    
+
     const guess = parseInt(userGuess);
-    
+
     if (guess === correctAnswer) {
       setFeedback(`Correct! That's ${correctAnswer}¢`);
       setProgress(progress + 1);
@@ -60,7 +60,7 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
       } else {
         setFeedback('Wrong! Try again.');
       }
-      
+
       setTimeout(() => {
         setFeedback(null);
       }, 2000);
@@ -81,14 +81,16 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
 
         {/* Feedback message */}
         {feedback && (
-          <Box className={`p-4 absolute m-4 top-0 left-0 right-0 rounded-lg border-4 z-10 shadow-lg ${
-            feedback.includes('Correct') 
-              ? 'bg-green-200 border-green-500' 
-              : 'bg-red-200 border-red-500'
-          }`}>
-            <Text className={`font-bold text-center ${
-              feedback.includes('Correct') ? 'text-green-800' : 'text-red-800'
-            }`}>{feedback}</Text>
+          <Box
+            className={`p-4 absolute m-4 top-0 left-0 right-0 rounded-lg border-4 z-10 shadow-lg ${
+              feedback.includes('Correct') ? 'bg-green-200 border-green-500' : 'bg-red-200 border-red-500'
+            }`}
+          >
+            <Text
+              className={`font-bold text-center ${feedback.includes('Correct') ? 'text-green-800' : 'text-red-800'}`}
+            >
+              {feedback}
+            </Text>
           </Box>
         )}
 
@@ -123,9 +125,7 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
 
           {/* User input display */}
           <Box className="bg-white rounded-lg p-4 border-2 border-gray-300">
-            <Text className="text-4xl font-bold text-gray-800 text-center">
-              {userGuess ? `${userGuess}¢` : '_ _'}
-            </Text>
+            <Text className="text-4xl font-bold text-gray-800 text-center">{userGuess ? `${userGuess}¢` : '_ _'}</Text>
           </Box>
 
           {/* Number pad */}
@@ -141,7 +141,7 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
                   </Pressable>
                 ))}
               </Box>
-              
+
               {/* Bottom row: Backspace, 0, Check */}
               <Box className="flex-row justify-center gap-2">
                 <Pressable onPress={handleBackspace} className="flex-1">
@@ -149,13 +149,13 @@ function CoinsCountGame({ config }: { config: CoinsCountConfig }) {
                     <Text className="text-white text-xl font-bold">⌫</Text>
                   </Box>
                 </Pressable>
-                
+
                 <Pressable onPress={() => handleNumberPress('0')} className="flex-1">
                   <Box className="bg-white rounded-lg p-4 border-2 border-gray-300 items-center shadow-sm">
                     <Text className="text-gray-800 text-2xl font-bold">0</Text>
                   </Box>
                 </Pressable>
-                
+
                 <Pressable onPress={checkAnswer} className="flex-1">
                   <Box className="bg-green-500 rounded-lg p-4 border-2 border-green-600 items-center shadow-sm">
                     <Text className="text-white text-xl font-bold">✓</Text>

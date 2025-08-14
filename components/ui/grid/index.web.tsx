@@ -25,7 +25,7 @@ const Grid = React.forwardRef<HTMLDivElement, IGridProps>(({ className, _extra, 
     <div
       ref={ref}
       className={gridStyle({
-        class: className + ' ' + finalGridClass,
+        class: `${className} ${finalGridClass}`,
       })}
       {...props}
     />
@@ -47,7 +47,7 @@ const GridItem = React.forwardRef<HTMLDivElement, IGridItemProps>(({ className, 
     <div
       ref={ref}
       className={gridItemStyle({
-        class: className + ' ' + finalGridItemClass,
+        class: `${className} ${finalGridItemClass}`,
       })}
       {...props}
     />
